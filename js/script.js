@@ -50,5 +50,4 @@ rose.subscribe(billy);
 rose.subscribe(jack);
 
 billy.сonfess(rose);
-console.log(rose);
 
