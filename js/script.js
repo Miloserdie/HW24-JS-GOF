@@ -1,84 +1,61 @@
-const rose = (function() {
-	const module = {};
-	const personname = 'Rose';
+function Subject(name) {
+	const personName = name;
 	let observers = [];
 
-	module.getObservers = function () {
+	this.getName = function() {
+		return personName;
+	}
+
+	this.getObservers = function() {
 		return observers;
 	}
 
-	module.getName = function () {
-		return personname;
-	}
-
-	module.subscribe = function (observer) {
+	this.subscribe = function(observer) {
 		observers.push(observer);
 	}
 
-	module.unsubscribe = function (observer) {
+	this.unsubscribe = function(observer) {
 		observers = observers.filter(obs => obs !== observer);
 	}
 
-	module.answerToConfession = function (observer) {
-		console.log(`${personname}: Yes, I agree ${observer}!`);
-
+	this.answerToConfession = function(observer) {
+		console.log(`${personName}: Yes, I agree ${observer}!`);
+	
 		for (let obs of observers) {
-			obs.reaction(observer, rose);
+			obs.reaction(observer, this);
 		}
 	}
+}
 
-	return module
-})();
+function Observer(name) {
+	const personName = name;
 
-const billy = (function () {
-	const personname = 'Billy';
-	const module = {};
-
-	module.getName = function () {
-		return personname;
+	this.getName = function() {
+		return personName;
 	}
 
-	module.сonfess = function (subject) {
-		console.log(`${personname}: ${subject.getName()}, let's dating!`);
-		subject.answerToConfession(personname);
+	this.сonfess = function (subject) {
+		console.log(`${personName}: ${subject.getName()}, let's dating!`);
+
+		subject.answerToConfession(personName);
 	}
 
-	module.reaction = function(name, subject) {
-		if(personname === name) {	
-			console.log(`${personname}: Yippee. I' love you ${subject.getName()}!`);
+	this.reaction = function(name, subject) {
+		if(personName === name) {	
+			console.log(`${personName}: Yippee. I' love you ${subject.getName()}!`);
 		} else {
-			console.log(`${personname}: Ooooh no( ` );
+			console.log(`${personName}: Ooooh no( ` );
 		}
 	}
+}
 
-	return module
-})();
+const rose = new Subject('Rose');
 
-const jack = (function () {
-	const personname = 'Jack';
-	const module = {};
+const jack = new Observer('Jack');
 
-	module.getName = function () {
-		return personname;
-	}
+const billy = new Observer('Billy');
 
-	module.сonfess = function (subject) {
-		console.log(`${personname}: ${subject.getName()}, let's dating!`);
-		subject.answerToConfession(personname);
-	}
+rose.subscribe(jack);
+rose.subscribe(billy);
 
-	module.reaction = function(name, subject) {
-		if(personname === name) {	
-			console.log(`${personname}: Yippee. I' love you ${subject.getName()}!`);
-		} else {
-			console.log(`${personname}: Ooooh no( ` );
-		}
-	}
-
-	return module
-})();
-
-rose.subscribe(billy)
-rose.subscribe(jack)
-
-billy.сonfess(rose)
+billy.сonfess(rose);
